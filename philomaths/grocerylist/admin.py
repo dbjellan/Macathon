@@ -1,3 +1,8 @@
 from django.contrib import admin
+from grocerylist.models import List, Product, Store
 
-# Register your models here.
+admin.site.register(List)
+admin.site.register(Product)
+admin.site.register(Store)
+
+
