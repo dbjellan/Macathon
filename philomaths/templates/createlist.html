@@ -36,7 +36,7 @@
         {% if item_list %}
 
             <table style="width:100%">
-            <h2><tr><td>Product </td><td>Quantity</td></tr></h2>
+            <h2><tr><td><b>Product</b></td><td><b>Quantity</b></td></tr></h2>
             {% for item in item_list.all %}
                 <tr><td>{{ item.product.name }}</td><td>{{ item.quantity }}</tr>
             {% endfor %}
@@ -56,10 +56,10 @@
         </form>
 
 
-      <footer class="footer">
+      </div>
+        <footer class="footer">
         <p>&copy; Savey 2015</p>
       </footer>
-      </div>
     </div> <!-- /container -->
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
