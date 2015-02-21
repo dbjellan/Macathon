@@ -64,9 +64,9 @@ def createlist(request):
                 except List.DoesNotExist:
                     print 'list does not exist'
     else:
-            l = List(name='My List')
-            l.save()
-            tag = l.uuid
+        l = List(name='My List')
+        l.save()
+        tag = l.uuid
 
     if request.POST.has_key('name'):
         form = AddListForm()
@@ -100,3 +100,13 @@ def index(request):
     template = loader.get_template('index.html')
     context = RequestContext(request)
     return HttpResponse(template.render(context))
+
+
+def inputimage(request):
+    template = loader.get_template('inputimage.html')
+    context = RequestContext(request)
+    return HttpResponse(template.render(context))
+
+
+
+
