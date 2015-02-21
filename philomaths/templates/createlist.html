@@ -45,7 +45,7 @@
             <p>Add some items.</p>
         {% endif %}
 
-
+        
 	    <form action="{{ action }}" method="POST">
   		    {% csrf_token %}
         <input type='hidden' name="tag" value="{{ tag }}" />
