@@ -59,7 +59,7 @@ def createlist(request):
                 except List.DoesNotExist:
                     print 'list does not exist'
     else:
-            l = List(name='bob')
+            l = List(name='My List')
             l.save()
             tag = l.uuid
     try:    
