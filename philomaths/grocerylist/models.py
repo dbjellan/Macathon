@@ -19,6 +19,7 @@ class UUIDField(models.CharField) :
 class Store(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
+    name = models.TextField()
 
 
 class Product(models.Model):
@@ -36,7 +37,7 @@ class Product(models.Model):
         return self.name
 
 class StoreProduct(models.Model):
-    price = models.DecimalField(decimal_places=2, max_digits=4)
+    price = models.DecimalField(decimal_places=2, max_digits=8)
     product = models.ForeignKey(Product)
     store = models.ForeignKey(Store)
 
