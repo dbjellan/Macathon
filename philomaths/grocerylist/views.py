@@ -11,6 +11,10 @@ class ListForm(forms.Form):
     products = forms.ModelMultipleChoiceField(queryset=Product.objects.all())
     quantity = forms.IntegerField()
 
+class AddListForm(forms.Form):
+    products = forms.ModelMultipleChoiceField(queryset=Product.objects.all())
+    quantity = forms.IntegerField()
+
 class TestForm(ModelForm):
     class Meta:
             model = List
@@ -21,12 +25,18 @@ class ProductForm(ModelForm):
 
 
 def createlist(request):
-    if request.POST.has_key('tag'):
+    if request.POST.has_key('tag') and request.POST['tag'] != 'none':
         tag = request.POST['tag']
+        form = AddListForm(request.POST)
+        print 'using add to list'
+    elif request.method == 'POST':
+        tag = 'none'
+        form = ListForm(request.POST)
     else:
         tag = 'none'
+        form = ListForm()
+
     if request.method == 'POST':
-        form = ListForm(request.POST)
         if form.is_valid():
             product = form.cleaned_data['products']
             quantity = form.cleaned_data['quantity']
@@ -37,14 +47,17 @@ def createlist(request):
                 l.save()
                 l.products.add(order)
                 tag = l.uuid
+                print tag
                 l.save()
             else:
                 try:
                     l = List.objects.get(uuid=tag)
-                    l.products.add(*product)
+                    order = ProductOrder(product=product[0], quantity=quantity)
+                    order.save()
+                    l.products.add(order)
                     l.save()
                 except List.DoesNotExist:
-                    pass
+                    print 'list does not exist'
     try:    
         l = List.objects.get(uuid=tag)
         item_list = l.products
@@ -54,7 +67,6 @@ def createlist(request):
         name = "New List"
 
     template = loader.get_template('createlist.html')
-    form = ListForm()
 
     context = RequestContext(request, {
         'item_list' : item_list,

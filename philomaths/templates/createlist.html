@@ -44,9 +44,10 @@
 
 	    <form action="{{ action }}" method="POST">
   		    {% csrf_token %}
-        <table>
+        <input type='hidden' name="tag" value="{{ tag }}" />
+        <table style="width:100%">
             {{ form }}
-        <table>
+        </table>
         <input type="submit" value="Save" />
         </form>
 
