@@ -42,3 +42,8 @@ class List(models.Model):
     products = models.ManyToManyField(Product)
     name = models.TextField()
     uuid = UUIDField(primary_key=True, editable=False)
+
+    def __unicode__(self):
+        return self.name
+
+        

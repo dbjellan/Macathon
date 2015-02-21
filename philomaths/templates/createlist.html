@@ -26,10 +26,11 @@
             <li role="presentation"><a href="#">Contact</a></li>
           </ul>
         </nav>
-        <h3 class="text-muted">Project name</h3>
+        <h3 class="text-muted">{{ name }}</h3>
       </div>
       
         {% if item_list %}
+
             <ul>
             {% for item in item_list.all %}
                 <li>{{ item }}</li>
@@ -42,7 +43,6 @@
 
 	    <form action="{{ action }}" method="POST">
   		    {% csrf_token %}
-        <input type="hidden" name="tag" value="{{ tag }}" />
         <table>
             {{ form }}
         <table>
