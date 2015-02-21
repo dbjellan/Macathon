@@ -31,7 +31,7 @@
       
         {% if item_list %}
             <ul>
-            {% for item in item_list %}
+            {% for item in item_list.all %}
                 <li>{{ item }}</li>
             {% endfor %}
             </ul>

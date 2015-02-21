@@ -7,8 +7,8 @@ from django.forms import ModelForm
 from grocerylist.models import List, Product
 
 class ListForm(forms.Form):
+    name = forms.CharField()
     products = forms.ModelMultipleChoiceField(queryset=Product.objects.all())
-    tag = forms.IntegerField(widget=forms.HiddenInput())
 
 class TestForm(ModelForm):
     class Meta:
@@ -20,17 +20,29 @@ class ProductForm(ModelForm):
 
 
 def createlist(request):
-    tag = 'none'
+    if request.POST.has_key('tag'):
+        tag = request.POST['tag']
+    else:
+        tag = 'none'
     if request.method == 'POST':
         form = ListForm(request.POST)
+        print 'in form'
         if form.is_valid():
+            print 'form valid'
             product = form.cleaned_data['products']
-            if form.cleaned_data['tag'] == 'none':
+            if tag == 'none':
                 l = List(name=form.cleaned_data['name'])
                 l.save()
-                l.products.add(product)
+                l.products.add(*product)
                 tag = l.uuid
                 l.save()
+            else:
+                try:
+                    l = List.objects.get(uuid=tag)
+                    l.products.add(*product)
+                    l.save()
+                except List.DoesNotExist:
+                    pass
     try:    
         item_list = List.objects.get(uuid=tag).products
     except List.DoesNotExist:
