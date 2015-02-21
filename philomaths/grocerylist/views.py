@@ -57,7 +57,7 @@ def createlist(request):
                     l = List.objects.get(uuid=tag)
                     order = ProductOrder(product=product, quantity=quantity)
                     if request.POST.has_key('name'):
-                        order.name = form.cleaned_data['name']
+                        l.name = form.cleaned_data['name']
                     order.save()
                     l.products.add(order)
                     l.save()
