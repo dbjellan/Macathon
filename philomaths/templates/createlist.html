@@ -42,9 +42,9 @@
 
 	    <form action="{{ action }}" method="POST">
   		    {% csrf_token %}
-        <ul>
+        <table>
             {{ form }}
-        </ul>
+        <table>
         <input type="submit" value="Save" />
         </form>
 

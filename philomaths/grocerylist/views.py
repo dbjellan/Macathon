@@ -9,6 +9,10 @@ from grocerylist.models import List, Product
 class ListForm(forms.Form):
     products = forms.ModelMultipleChoiceField(queryset=Product.objects.all())
 
+class TestForm(ModelForm):
+    class Meta:
+            model = List
+
 class ProductForm(ModelForm):
     class Meta:
         model = Product
@@ -21,9 +25,10 @@ def createlist(request):
     item_list = ['boob', 'penis']
     template = loader.get_template('createlist.html')
     form = ListForm()
+
     context = RequestContext(request, {
         'item_list' : item_list,
-        'form' : form.as_ul(),
+        'form' : form.as_table(),
     })
     return HttpResponse(template.render(context))
 
