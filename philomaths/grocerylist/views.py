@@ -4,11 +4,12 @@ from django.shortcuts import render
 from django import forms
 from django.forms import ModelForm
 
-from grocerylist.models import List, Product
+from grocerylist.models import List, Product, ProductOrder
 
 class ListForm(forms.Form):
     name = forms.CharField()
     products = forms.ModelMultipleChoiceField(queryset=Product.objects.all())
+    quantity = forms.IntegerField()
 
 class TestForm(ModelForm):
     class Meta:
@@ -30,10 +31,13 @@ def createlist(request):
         if form.is_valid():
             print 'form valid'
             product = form.cleaned_data['products']
+            quantity = form.cleaned_data['quantity']
             if tag == 'none':
+                order = ProductOrder(product=product[0], quantity=quantity)
+                order.save()
                 l = List(name=form.cleaned_data['name'])
                 l.save()
-                l.products.add(*product)
+                l.products.add(order)
                 tag = l.uuid
                 l.save()
             else:
@@ -44,7 +48,8 @@ def createlist(request):
                 except List.DoesNotExist:
                     pass
     try:    
-        item_list = List.objects.get(uuid=tag).products
+        l = List.objects.get(uuid=tag)
+        item_list = l.products
     except List.DoesNotExist:
         item_list = []
 
@@ -56,6 +61,7 @@ def createlist(request):
         'form' : form.as_table(),
         'tag' : tag
     })
+
     return HttpResponse(template.render(context))
 
 def displayresult(request):

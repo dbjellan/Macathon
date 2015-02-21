@@ -27,18 +27,28 @@ class Product(models.Model):
         ('FOZ', 'Fluid Ounces'),
     )
 
-    price = models.DecimalField(decimal_places=2, max_digits=4)
     name = models.TextField()
     description = models.TextField()
     units = models.CharField(max_length=5, choices=measurements)
     quantity = models.FloatField()
-    available_stores = models.ManyToManyField(Store)
     
     def __unicode__(self):
         return self.name
 
+class StoreProduct(models.Model):
+    price = models.DecimalField(decimal_places=2, max_digits=4)
+    product = models.ForeignKey(Product)
+    store = models.ForeignKey(Store)
+
+class ProductOrder(models.Model):
+    quantity = models.IntegerField()
+    product = models.ForeignKey(Product)
+
+    def __unicode__(self):
+        return self.product.name + '    ' + str(self.quantity)
+
 
 class List(models.Model):
-    products = models.ManyToManyField(Product)
+    products = models.ManyToManyField(ProductOrder)
     name = models.TextField()
     uuid = UUIDField(primary_key=True, editable=False)
