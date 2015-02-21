@@ -32,11 +32,12 @@
       
         {% if item_list %}
 
-            <ul>
+            <table style="width:100%">
+            <h2><tr><td>Product </td><td>Quantity</td></tr></h2>
             {% for item in item_list.all %}
-                <li>{{ item }}</li>
+                <tr><td>{{ item.product.name }}</td><td>{{ item.quantity}}</tr>
             {% endfor %}
-            </ul>
+            </table>
         {% else %}
             <p>Add some items.</p>
         {% endif %}
