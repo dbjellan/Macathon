@@ -47,7 +47,7 @@ def createlist(request):
                 l.save()
                 l.products.add(order)
                 tag = l.uuid
-                print tag
+                print 'saving tag' + tag
                 l.save()
             else:
                 try:
@@ -58,6 +58,10 @@ def createlist(request):
                     l.save()
                 except List.DoesNotExist:
                     print 'list does not exist'
+    else:
+            l = List(name='bob')
+            l.save()
+            tag = l.uuid
     try:    
         l = List.objects.get(uuid=tag)
         item_list = l.products
