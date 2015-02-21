@@ -17,6 +17,10 @@ class Product(models.Model):
     units = models.CharField(max_length=5, choices=measurements)
     quantity = models.FloatField()
     available_stores = models.ManyToManyField(Store)
+    
+    def __unicode__(self):
+        return self.name
+
 
 class List(models.Model):
     products = models.ManyToManyField(Product)
