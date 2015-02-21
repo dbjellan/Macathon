@@ -25,16 +25,19 @@ class ProductForm(ModelForm):
 
 
 def createlist(request):
-    if request.POST.has_key('tag') and request.POST['tag'] != 'none':
-        tag = request.POST['tag']
+    if request.method == 'POST' and not request.POST.has_key('name'):
         form = AddListForm(request.POST)
         print 'using add to list'
     elif request.method == 'POST':
-        tag = 'none'
         form = ListForm(request.POST)
     else:
-        tag = 'none'
         form = ListForm()
+
+
+    if request.POST.has_key('tag') and request.POST['tag'] != 'none':
+        tag = request.POST['tag']
+    else:
+        tag = 'none'
 
     if request.method == 'POST':
         if form.is_valid():
@@ -53,15 +56,21 @@ def createlist(request):
                 try:
                     l = List.objects.get(uuid=tag)
                     order = ProductOrder(product=product, quantity=quantity)
+                    if request.POST.has_key('name'):
+                        order.name = form.cleaned_data['name']
                     order.save()
                     l.products.add(order)
                     l.save()
                 except List.DoesNotExist:
                     print 'list does not exist'
     else:
-            l = List(name='bob')
+            l = List(name='My List')
             l.save()
             tag = l.uuid
+
+    if request.POST.has_key('name'):
+        form = AddListForm()
+
     try:    
         l = List.objects.get(uuid=tag)
         item_list = l.products
