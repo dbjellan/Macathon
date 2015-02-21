@@ -22,7 +22,23 @@ def createlist(request):
     if request.method == 'POST':
         pass
     
-    item_list = ['boob', 'penis']
+    item_list = ['boob', 'penis', 'condom']
+    if request.method == 'POST':
+        form = ListForm(request.POST)
+        #item_list.append(form.products)
+        
+        # x = request.POST['Product']
+        # for i in list(x.objects.all()):
+        #     item_list.append(i)
+        if form.is_valid():
+            product = form.cleaned_data['products']
+            for i in range(len(product)):
+                item_list.append(product[i])
+                #print(product[i])
+
+
+
+
     template = loader.get_template('createlist.html')
     form = ListForm()
 
