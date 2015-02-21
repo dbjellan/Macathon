@@ -4,7 +4,9 @@ from django.shortcuts import render
 from django import forms
 from django.forms import ModelForm
 
-from grocerylist.models import List, Product, ProductOrder
+from decimal import Decimal
+
+from grocerylist.models import List, Product, ProductOrder, Store, StoreProduct
 
 class ListForm(forms.Form):
     name = forms.CharField()
@@ -25,6 +27,9 @@ class ProductForm(ModelForm):
 
 
 def createlist(request):
+    if request.method == 'POST' and request.POST['action'] == 'Find Store':
+        return displayresult(request)
+
     if request.method == 'POST' and not request.POST.has_key('name'):
         form = AddListForm(request.POST)
         print 'using add to list'
@@ -92,8 +97,30 @@ def createlist(request):
     return HttpResponse(template.render(context))
 
 def displayresult(request):
+    if request.POST.has_key('tag'):
+        tag = request.POST['tag']
+        l = List.objects.get(uuid=tag)
+        min_price = Decimal(1000000)
+        price = 0.0
+        best_store = ''
+        for store in Store.objects.all():
+            price = Decimal(0.0)
+            for item in l.products.all():
+                storeproduct = StoreProduct.objects.get(store=store, product=item.product)
+                price += storeproduct.price * item.quantity
+            if price < min_price:
+                min_price = price
+                best_store = store.name
+
+    name = l.name
     template = loader.get_template('displayresult.html')
-    context = RequestContext(request)
+    context = RequestContext(request, {
+        'item_list' : l.products.all(),
+        'tag' : tag,
+        'name' : name,
+        'store' : best_store,
+        'price' : min_price,
+    })
     return HttpResponse(template.render(context))
 
 def index(request):
