@@ -20,16 +20,19 @@
     <div class="container">
       <div class="header">
         <nav>
+          <div style="height:15px;font-size:1px;">&nbsp;</div>
           <ul class="nav nav-pills pull-right">
             <li role="presentation" class="active"><a href="/grocerylist">Home</a></li>
             <li role="presentation"><a href="#">About</a></li>
             <li role="presentation"><a href="#">Contact</a></li>
           </ul>
         </nav>
-        <h3 class="text-muted">{{ name }}</h3>
+        
       </div>
+      <br></br>
+      <div style="height:15px;font-size:1px;">&nbsp;</div>
       <div class="jumbotron">
-      
+        <h3 class="text-muted">{{ name }}</h3>
         {% if item_list %}
 
             <table style="width:100%">
