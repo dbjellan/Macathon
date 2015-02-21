@@ -8,11 +8,11 @@ from grocerylist.models import List, Product, ProductOrder
 
 class ListForm(forms.Form):
     name = forms.CharField()
-    products = forms.ModelMultipleChoiceField(queryset=Product.objects.all())
+    products = forms.ModelChoiceField(queryset=Product.objects.all())
     quantity = forms.IntegerField()
 
 class AddListForm(forms.Form):
-    products = forms.ModelMultipleChoiceField(queryset=Product.objects.all())
+    products = forms.ModelChoiceField(queryset=Product.objects.all())
     quantity = forms.IntegerField()
 
 class TestForm(ModelForm):
@@ -41,7 +41,7 @@ def createlist(request):
             product = form.cleaned_data['products']
             quantity = form.cleaned_data['quantity']
             if tag == 'none':
-                order = ProductOrder(product=product[0], quantity=quantity)
+                order = ProductOrder(product=product, quantity=quantity)
                 order.save()
                 l = List(name=form.cleaned_data['name'])
                 l.save()
@@ -52,7 +52,7 @@ def createlist(request):
             else:
                 try:
                     l = List.objects.get(uuid=tag)
-                    order = ProductOrder(product=product[0], quantity=quantity)
+                    order = ProductOrder(product=product, quantity=quantity)
                     order.save()
                     l.products.add(order)
                     l.save()
