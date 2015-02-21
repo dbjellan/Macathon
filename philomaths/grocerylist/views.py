@@ -8,6 +8,7 @@ from grocerylist.models import List, Product
 
 class ListForm(forms.Form):
     products = forms.ModelMultipleChoiceField(queryset=Product.objects.all())
+    tag = forms.IntegerField(widget=forms.HiddenInput())
 
 class TestForm(ModelForm):
     class Meta:
@@ -19,16 +20,29 @@ class ProductForm(ModelForm):
 
 
 def createlist(request):
+    tag = 'none'
     if request.method == 'POST':
-        pass
-    
-    item_list = ['boob', 'penis']
+        form = ListForm(request.POST)
+        if form.is_valid():
+            product = form.cleaned_data['products']
+            if form.cleaned_data['tag'] == 'none':
+                l = List(name=form.cleaned_data['name'])
+                l.save()
+                l.products.add(product)
+                tag = l.uuid
+                l.save()
+    try:    
+        item_list = List.objects.get(uuid=tag).products
+    except List.DoesNotExist:
+        item_list = []
+
     template = loader.get_template('createlist.html')
     form = ListForm()
 
     context = RequestContext(request, {
         'item_list' : item_list,
         'form' : form.as_table(),
+        'tag' : tag
     })
     return HttpResponse(template.render(context))
 
