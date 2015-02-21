@@ -21,6 +21,8 @@ class Store(models.Model):
     longitude = models.FloatField()
     name = models.TextField()
 
+    def __unicode__(self):
+        return self.name
 
 class Product(models.Model):
     measurements = (
@@ -40,6 +42,9 @@ class StoreProduct(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=8)
     product = models.ForeignKey(Product)
     store = models.ForeignKey(Store)
+
+    def __unicode__(self):
+        return self.product.name + '    ' + str(self.price)
 
 class ProductOrder(models.Model):
     quantity = models.IntegerField()

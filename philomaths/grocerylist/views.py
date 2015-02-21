@@ -27,7 +27,7 @@ class ProductForm(ModelForm):
 
 
 def createlist(request):
-    if request.method == 'POST' and request.POST['action'] == 'Find Store':
+    if request.method == 'POST' and request.POST['action'] == 'Submit List':
         return displayresult(request)
 
     if request.method == 'POST' and not request.POST.has_key('name'):
