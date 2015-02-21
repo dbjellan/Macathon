@@ -27,9 +27,7 @@ def createlist(request):
         tag = 'none'
     if request.method == 'POST':
         form = ListForm(request.POST)
-        print 'in form'
         if form.is_valid():
-            print 'form valid'
             product = form.cleaned_data['products']
             quantity = form.cleaned_data['quantity']
             if tag == 'none':
@@ -50,8 +48,10 @@ def createlist(request):
     try:    
         l = List.objects.get(uuid=tag)
         item_list = l.products
+        name = List.objects.get(uuid=tag).name
     except List.DoesNotExist:
         item_list = []
+        name = "New List"
 
     template = loader.get_template('createlist.html')
     form = ListForm()
@@ -59,7 +59,9 @@ def createlist(request):
     context = RequestContext(request, {
         'item_list' : item_list,
         'form' : form.as_table(),
-        'tag' : tag
+        'tag' : tag,
+        'name' : name
+
     })
 
     return HttpResponse(template.render(context))
