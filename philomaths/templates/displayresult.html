@@ -41,7 +41,7 @@
                 <tr><td>{{ item.product.name }}</td><td>{{ item.quantity }}</tr>
             {% endfor %}
             </table>
-            <h4 class="text-muted">Your total cost: <font style="color:green">${{ price }}</font></h4>
+            <h4 class="text-muted">Your total cost: <font style="color:green">${{ price }}</font>. You would have paid an averge of <font style="color:red">${{ otherprice }}</font> otherwise.</font></h4>
             
         {% else %}
             <p>Add some items.</p>

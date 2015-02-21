@@ -114,12 +114,15 @@ def displayresult(request):
 
     name = l.name
     template = loader.get_template('displayresult.html')
+    otherprice = Decimal(min_price *Decimal(1.2))
+    otherprice = '%.2f' % otherprice
     context = RequestContext(request, {
         'item_list' : l.products.all(),
         'tag' : tag,
         'name' : name,
         'store' : best_store,
         'price' : min_price,
+        'otherprice' : otherprice,
     })
     return HttpResponse(template.render(context))
 
